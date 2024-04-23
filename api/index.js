@@ -6,8 +6,10 @@ dotenv.config();
 
 import authRouter from "./routes/auth.route.js";
 
+const dbName = 'FOOD_DONATION';
+
 mongoose
-  .connect(process.env.MONGO_URL)
+  .connect(`mongodb+srv://sribabu:63037sribabu@atlascluster.k6u2oy9.mongodb.net/${dbName}?retryWrites=true&w=majority`)
   .then(() => {
     console.log("Connected to MongoDB!");
   })
