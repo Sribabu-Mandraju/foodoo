@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 dotenv.config();
+import path from "path";
 
 import authRouter from "./routes/auth.route.js";
 
@@ -18,10 +19,12 @@ mongoose
     console.log(err);
   });
 
+const _dirname = path.resolve();
+
 const app = express();
 app.use(express.json());
 const allowedOrigins = [process.env.FRONTEND_URL];
- // Add your allowed origin here
+// Add your allowed origin here
 const corsOptions = {
   origin: function (origin, callback) {
     if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
@@ -42,3 +45,9 @@ app.listen(3000, () => {
 });
 
 app.use("/api/auth", authRouter);
+
+app.use("*", (req, res) => {
+  res.sendFile(path.join(_dirname, "client", "dist", "index.html"));
+});
+
+app.use(express.static(path.join(_dirname, "/client/dist")));
