@@ -6,47 +6,46 @@ import {
   DialogBody,
   DialogFooter,
 } from "@material-tailwind/react";
- 
-export const Model2 = ({children,button,title}) => {
 
-
+export const Model2 = ({ children, button, title }) => {
   const [open, setOpen] = React.useState(false);
 
-  const deleteDonation = async ({id}) => {
-    try {
-      const response = await fetch(`/api/auth/deletedonation/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      if (response.ok){
-        alert("successfully deleted");
-      }
-  
-      if (!response.ok) {
-        throw new Error('Failed to delete donation');
-      }
-  
-      console.log('Donation deleted successfully');
-    } catch (error) {
-      console.error('Error deleting donation:', error.message);
-    }
-  };
-  deleteDonation()
- 
+  // const deleteDonation = async ({id}) => {
+  //   try {
+  //     const response = await fetch(`/api/auth/deletedonation/${id}`, {
+  //       method: 'DELETE',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //     });
+  //     if (response.ok){
+  //       alert("successfully deleted");
+  //     }
+
+  //     if (!response.ok) {
+  //       throw new Error('Failed to delete donation');
+  //     }
+
+  //     console.log('Donation deleted successfully');
+  //   } catch (error) {
+  //     console.error('Error deleting donation:', error.message);
+  //   }
+  // };
+  // deleteDonation()
+
   const handleOpen = () => setOpen(!open);
- 
+
   return (
     <>
-      <Button onClick={handleOpen}  className="bg-[#7c7cee] font-bold  text-center rounded-[7px] border-[2px] border-[black]">
+      <Button
+        onClick={handleOpen}
+        className="bg-[#7c7cee] font-bold  text-center rounded-[7px] border-[2px] border-[black]"
+      >
         {button}
       </Button>
       <Dialog open={open} handler={handleOpen}>
         <DialogHeader>{title}</DialogHeader>
-        <DialogBody>
-          {children}
-        </DialogBody>
+        <DialogBody>{children}</DialogBody>
         <DialogFooter>
           <Button
             variant="text"
@@ -56,9 +55,8 @@ export const Model2 = ({children,button,title}) => {
           >
             <span>Close</span>
           </Button>
-          
         </DialogFooter>
       </Dialog>
     </>
   );
-}
+};

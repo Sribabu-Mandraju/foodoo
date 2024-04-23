@@ -1,7 +1,7 @@
 import bcryptjs from "bcryptjs";
 import User from "../models/user.models.js";
 import jwt from "jsonwebtoken";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 
 dotenv.config();
 export const signup = async (req, res) => {
@@ -65,6 +65,15 @@ export const signin = async (req, res) => {
       user: rest,
       message: "User Logged in Successfully!",
     });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const signOut = async (req, res, next) => {
+  try {
+    res.clearCookie("access_token");
+    res.status(200).json("User has been logged out!");
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }

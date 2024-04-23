@@ -56,6 +56,7 @@ const Signin = () => {
 
       if (data && data.success) {
         dispatch(signInSuccess(data.user));
+        toast.success("login successful");
         // console.log(currentUser, "current user");
         navigate("/dashboard");
       }
@@ -72,11 +73,11 @@ const Signin = () => {
     if (error) {
       toast.error(error);
     }
-    // console.log(currentUser, "currentUser");
+    console.log(currentUser, "currentUser");
     if (currentUser) {
       navigate("/dashboard");
     }
-    // console.log(user, "user");
+    // console.log(currentUser, "user");
     // console.log(currentUser?.role, "role");
   }, [currentUser, error]);
 

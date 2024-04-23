@@ -4,7 +4,7 @@ import { Outlet, Navigate } from "react-router-dom";
 const ProtectedRoutes = () => {
   const { currentUser } = useSelector((state) => state.user);
 
-  return currentUser === null ? <Navigate to="/signin" /> : <Outlet />;
+  return currentUser === null ? <Navigate to="/" /> : <Outlet />;
 };
 
 export default ProtectedRoutes;
