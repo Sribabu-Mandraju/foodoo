@@ -22,7 +22,7 @@ mongoose
 const _dirname = path.resolve();
 
 const app = express();
-// app.use(express.json());
+app.use(express.json());
 // const allowedOrigins = [process.env.FRONTEND_URL];
 // // Add your allowed origin here
 // const corsOptions = {
