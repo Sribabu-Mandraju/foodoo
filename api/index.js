@@ -19,9 +19,9 @@ mongoose
   });
 
 const app = express();
-// app.use(cors({origin:"http://localhost:5174"}))
 app.use(express.json());
-const allowedOrigins = ["http://localhost:5174"];
+const allowedOrigins = [process.env.FRONTEND_URL];
+ // Add your allowed origin here
 const corsOptions = {
   origin: function (origin, callback) {
     if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
@@ -31,12 +31,14 @@ const corsOptions = {
     }
   },
 };
-app.use(cors());
+app.use(cors(corsOptions)); // Pass corsOptions to cors middleware
 
 app.use(cookieParser());
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000!");
+  // console.log(process.env.FRONTEND_URL)
+  // console.log(process.env.MONGO_URL)
 });
 
 app.use("/api/auth", authRouter);

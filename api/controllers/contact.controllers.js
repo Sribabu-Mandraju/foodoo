@@ -4,7 +4,6 @@ export const PostContact = async (req, res) => {
     try {
         const { name, email,contact, subject, message } = req.body;
 
-        console.log(req.body)
 
         const newContact = await Contact.create({
             name,
@@ -14,7 +13,6 @@ export const PostContact = async (req, res) => {
             message
         });
 
-        console.log(newContact)
 
         return res.status(200).json({
             success: true,

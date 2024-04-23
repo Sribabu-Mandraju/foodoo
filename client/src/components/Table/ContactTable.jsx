@@ -1,6 +1,8 @@
 import { Card, Typography } from "@material-tailwind/react";
 import { Button } from "@material-tailwind/react";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { FaSearch } from "react-icons/fa";
+
 
 import { Model2 } from "../models/Model2";
 import { useEffect, useState } from "react";
@@ -60,6 +62,10 @@ const TABLE_ROWS = [
 ];
 
 export const ContactTable = () => {
+  const [fromDate, setFromDate] = useState(null);
+  const [toDate, setToDate] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+
   const [contacts, setContacts] = useState([]);
   const fetchAllContacts = async () => {
     try {
@@ -97,8 +103,72 @@ export const ContactTable = () => {
     }
   };
 
+
+  const filterDataByDate = () => {
+    return contacts.filter((item) => {
+      const firstAiredDate = new Date(item.updatedAt);
+      const selectedStartDate = new Date(fromDate);
+      const selectedEndDate = new Date(toDate);
+  
+      return firstAiredDate >= selectedStartDate && firstAiredDate <= selectedEndDate;
+    });
+  };
+  
+  const filteredDataByDate = fromDate && toDate ? filterDataByDate() : contacts;
+
+  const filteredData = filteredDataByDate.filter(item => {
+    const email = item.email.toLowerCase();
+  
+    return email.includes(searchTerm.toLowerCase());
+  });
+
   return (
-    <Card className="h-full w-[97%] md:w-[95%] mt-[40px] mx-auto overflow-scroll">
+   <>
+   <div className="w-full flex items-center justify-between">
+        <div className="text-3xl md:text-5xl font-bold text-[#006d21] py-4 ps-4">
+          Queries
+        </div>
+        
+       
+   </div>
+   <div className="w-full flex justify-around md:justify-between items-center flex-wrap">
+        <div className="flex items-center">
+          <div className="flex flex-col m-3">
+            <label htmlFor="from" className="form-label font-bold text-black" >From</label>
+            <input 
+            type="date" 
+            className="rounded-[5px]" 
+            style={{ border: "2px solid black" }} 
+            value={fromDate} 
+            onChange={(e) => setFromDate(e.target.value)} 
+          />
+          </div>
+          <div className="flex flex-col m-3">
+            <label htmlFor="to" className="form-label font-bold  text-black">To</label>
+            <input 
+              type="date" 
+              className="rounded-[5px]" 
+              style={{ border: "2px solid black" }} 
+              value={toDate} 
+              onChange={(e) => setToDate(e.target.value)} 
+            />
+          </div>
+        </div>
+        <div className="flex items-center me-[30px]">
+          <FaSearch className="me-[-20px] pointer-events-none z-[1]  text-black " />
+          <input
+            type="text"
+            placeholder="Search..."
+            className="ps-[20px] w-[120px] md:w-[200px] h-[30px] rounded-[5px] border-[2px]"
+            style={{
+              border: "2px solid black",
+            }}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)} // Call handleSearch function on input change
+          />
+        </div>
+      </div>
+     <Card className="h-full w-[97%] md:w-[95%] mt-[40px] mx-auto overflow-scroll">
       <table className="w-full min-w-max table-auto text-left">
         <thead className="bg-black text-white">
           <tr className="bg-[black] text-white">
@@ -128,7 +198,7 @@ export const ContactTable = () => {
           </tr>
         </thead>
         <tbody>
-          {contacts.map(
+          {filteredData.map(
             (
               { _id, name, email, message, subject, contact, createdAt },
               index
@@ -223,7 +293,17 @@ export const ContactTable = () => {
             }
           )}
         </tbody>
+        
       </table>
+      
     </Card>
+    {filteredData.length === 0 && (
+              <div>
+                <div colSpan={TABLE_HEAD.length} className="p-4 text-center text-3xl text-black">
+                  No  Queries found.
+                </div>
+              </div>
+            )}
+   </>
   );
 };

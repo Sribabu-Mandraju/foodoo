@@ -12,6 +12,7 @@ export const DonateFood = async (req, res) => {
         categoryType,
         district,
       } = req.body;
+      console.log(req.body)
   
       const food = await Food.create({
         foodname,
@@ -23,7 +24,7 @@ export const DonateFood = async (req, res) => {
         categoryType,
         district,
       });
-
+      console.log(food)
   
       return res.status(200).json({
         success: true,

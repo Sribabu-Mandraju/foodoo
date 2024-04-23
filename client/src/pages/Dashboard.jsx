@@ -26,10 +26,11 @@ const TABLE_HEAD = [
 
 const Dashboard = () => {
   const [id, setId] = useState("");
-  // const { donations, loading, error } = useSelector((state) => state.donations);
-  // console.log("dd", donations.data);
-
   const [allDonations, setAllDonations] = useState([]);
+  const [filteredDonations, setFilteredDonations] = useState([]); // State to store filtered donations
+  const [searchTerm, setSearchTerm] = useState(''); // State to store search term
+  const [fromDate, setFromDate] = useState(null);
+  const [toDate, setToDate] = useState(null);
 
   const fetchAllDonations = async () => {
     try {
@@ -40,6 +41,7 @@ const Dashboard = () => {
       }
       if (data.success) {
         setAllDonations(data.data);
+        setFilteredDonations(data.data); // Initialize filteredDonations with all donations
       }
     } catch (error) {
       toast.error(error.message);
@@ -49,6 +51,40 @@ const Dashboard = () => {
   useEffect(() => {
     fetchAllDonations();
   }, []);
+
+
+
+// // Function to handle search and date filtering
+// const handleSearch = () => {
+//   // Filter donations based on date range
+//   const filtered = allDonations.filter(item => {
+//     const createdAtDate = new Date(item.createdAt); // Extract the date from createdAt
+
+//     // Check if the donation date is within the specified date range
+//     return (!fromDate || createdAtDate >= new Date(fromDate)) && (!toDate || createdAtDate <= new Date(toDate));
+//   });
+
+//   setFilteredDonations(filtered); // Update filteredDonations state with filtered data
+// };
+
+const filterDataByDate = () => {
+  return allDonations.filter((item) => {
+    const firstAiredDate = new Date(item.updatedAt);
+    const selectedStartDate = new Date(fromDate);
+    const selectedEndDate = new Date(toDate);
+
+    return firstAiredDate >= selectedStartDate && firstAiredDate <= selectedEndDate;
+  });
+};
+
+const filteredDataByDate = fromDate && toDate ? filterDataByDate() : allDonations;
+const filteredData = filteredDataByDate.filter(item => {
+  const email = item.email.toLowerCase();
+
+  return email.includes(searchTerm.toLowerCase());
+});
+
+
 
   const handleDelete = async (id) => {
     alert("Do You want to delete?");
@@ -71,7 +107,7 @@ const Dashboard = () => {
       console.error("Error deleting donation:", error.message);
     }
   };
-
+  console.log(filteredDonations)
   return (
     <section>
       <Header />
@@ -79,15 +115,42 @@ const Dashboard = () => {
         <div className="text-3xl md:text-5xl font-bold text-[#006d21] py-4 ps-4">
           Donations
         </div>
-        <div className="flex items-center mx-2">
+      
+      </div>
+      <div className="w-full flex justify-around sm:justify-between items-center flex-wrap">
+        <div className="flex items-center">
+          <div className="flex flex-col m-3">
+            <label htmlFor="from" className="form-label font-bold text-black" >From</label>
+            <input 
+            type="date" 
+            className="rounded-[5px]" 
+            style={{ border: "2px solid black" }} 
+            value={fromDate} 
+            onChange={(e) => setFromDate(e.target.value)} 
+          />
+          </div>
+          <div className="flex flex-col m-3">
+            <label htmlFor="to" className="form-label font-bold  text-black">To</label>
+            <input 
+              type="date" 
+              className="rounded-[5px]" 
+              style={{ border: "2px solid black" }} 
+              value={toDate} 
+              onChange={(e) => setToDate(e.target.value)} 
+            />
+          </div>
+        </div>
+        <div className="flex items-center me-[30px]">
           <FaSearch className="me-[-20px] pointer-events-none z-[1]  text-black " />
           <input
             type="text"
-            placeholder="search...."
+            placeholder="Search..."
             className="ps-[20px] w-[120px] md:w-[200px] h-[30px] rounded-[5px] border-[2px]"
             style={{
               border: "2px solid black",
             }}
+            value={searchTerm}
+            onChange={(e)=> setSearchTerm(e.target.value)} // Call handleSearch function on input change
           />
         </div>
       </div>
@@ -121,9 +184,10 @@ const Dashboard = () => {
               ))}
             </tr>
           </thead>
+          
           <tbody>
-            {allDonations.map((item, index) => {
-              const isLast = index === allDonations.length - 1;
+            {filteredData.map((item, index) => {
+              const isLast = index === filteredDonations.length - 1;
               const classes = isLast
                 ? "p-4"
                 : "p-4 border-b border-blue-gray-50";
@@ -157,21 +221,6 @@ const Dashboard = () => {
                       {item.email}
                     </Typography>
                   </td>
-                  {/* <td className={classes}>
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                      >
-                        <div className="">
-                          <Model2
-                            button="view"
-                            children={message}
-                            title={subject}
-                          />
-                        </div>
-                      </Typography>
-                    </td> */}
                   <td className={classes}>
                     <Typography
                       variant="small"
@@ -237,60 +286,25 @@ const Dashboard = () => {
                     </Button>
                   </td>
                   <td className={classes}>
-                    <Button color="Green" variant="outlined">
                       <EditModel
                         data={item}
                         button={<RiEdit2Fill className="text-lg" />}
                       />
-                    </Button>
                   </td>
                 </tr>
               );
             })}
+            
           </tbody>
         </table>
       </Card>
-      {/* <div className="w-full flex items-center flex-wrap justify-center mt-[40px]">
-        {donations.data.length > 0 ? (
-          donations.data.map((item, index) => (
-            <div
-              key={index} // Make sure to add a unique key
-              className="w-[96%] max-w-[320px] shadow relative rounded-[5px] m-5 h-[300px] flex flex-col "
-            >
-              <div className="font-bold text-2xl pt-3 text-center">
-                {item.foodname}({item.quantity})
-              </div>
-              <div className="text-center text-[grey] text-2xl pt-3">Donor</div>
-              <div className="text-center font-bold">{item.email}</div>
-              <div className="text-center font-bold">{item.phonenumber}</div>
-              <div className="w-full flex items-center justify-around flex-wrap">
-                <div className="bg-[#9df6cf] mx-2 rounded-[5px] px-2 mt-3">
-                  {item.address}
-                </div>
-                <div className="bg-[#9df6cf] mx-2 rounded-[5px] px-2 mt-3">
-                  {item.mealType}
-                </div>
-                <div className="bg-[#9df6cf] mx-2 rounded-[5px] px-2 mt-3">
-                  {item.categoryType}
+      {filteredData.length === 0 && (
+              <div>
+                <div colSpan={TABLE_HEAD.length} className="p-4 text-center text-3xl text-black">
+                  No  Donations found.
                 </div>
               </div>
-              <div className="w-full grid grid-cols-2 gap-2 my-3 absolute bottom-[13px]  ">
-                <button
-                  className="bg-[#971010] rounded-[5px] py-2 mx-3 text-white font-bold "
-                  onClick={() => {
-                    deleteDonation(item._id); // Pass the ID directly
-                  }}
-                >
-                  Delete
-                </button>
-                <EditModel data={item} button={"Edit"} />
-              </div>
-            </div>
-          ))
-        ) : (
-          <p>No data</p>
-        )}
-      </div> */}
+            )}
     </section>
   );
 };

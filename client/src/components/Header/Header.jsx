@@ -30,9 +30,13 @@ export const Header = () => {
   const handleLogOut = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("/api/auth/signout");
+      const response = await fetch("/api/auth/signout",
+      {
+        method:"POST"
+      }
+    );
       const data = await response.json();
-      if ((data.success = false)) {
+      if ((data.success === false)) {
         toast.error(data.message);
       }
       if (data.success) {

@@ -36,7 +36,6 @@ export const signup = async (req, res) => {
 };
 
 export const signin = async (req, res) => {
-  // console.log(req.body, "user");
   try {
     const { email, password } = req.body;
 
@@ -64,6 +63,7 @@ export const signin = async (req, res) => {
       success: true,
       user: rest,
       message: "User Logged in Successfully!",
+
     });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
@@ -72,8 +72,11 @@ export const signin = async (req, res) => {
 
 export const signOut = async (req, res, next) => {
   try {
-    res.clearCookie("access_token");
-    res.status(200).json("User has been logged out!");
+    // res.clearCookie("access_token");
+    res.status(200).clearCookie("access_token").json({
+      success:true,
+      message:"user has been logged out"
+    });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
