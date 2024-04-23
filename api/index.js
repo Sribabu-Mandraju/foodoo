@@ -22,19 +22,19 @@ mongoose
 const _dirname = path.resolve();
 
 const app = express();
-app.use(express.json());
-const allowedOrigins = [process.env.FRONTEND_URL];
-// Add your allowed origin here
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-};
-app.use(cors(corsOptions)); // Pass corsOptions to cors middleware
+// app.use(express.json());
+// const allowedOrigins = [process.env.FRONTEND_URL];
+// // Add your allowed origin here
+// const corsOptions = {
+//   origin: function (origin, callback) {
+//     if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error("Not allowed by CORS"));
+//     }
+//   },
+// };
+// app.use(cors(corsOptions)); // Pass corsOptions to cors middleware
 
 app.use(cookieParser());
 
