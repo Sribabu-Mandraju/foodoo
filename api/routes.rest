@@ -42,14 +42,13 @@ Content-Type: application/json
 
 ###
 
-PATCH http://localhost:3000/api/auth/updatedonation/66269f137f0cdb51fd2abf6a
+PUT http://localhost:3000/api/auth/updatedonation/66275a7d88df54badf5332b1
 Content-Type: application/json
-
 
   {
   "foodname": "Pizza1",
   "email": "examplesdmsdf nmsd1@example.com",
-  "phonenumber": 1234567890,
+  "phonenumber": "ss",
   "quantity": 12,
   "address": "123 Mainsdmndm St.peterberg",
   "mealType": "Smfdmfupper",

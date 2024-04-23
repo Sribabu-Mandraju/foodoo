@@ -1,52 +1,72 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Slide from '@mui/material/Slide';
-import { TransitionProps } from '@mui/material/transitions';
+import React from "react";
+import {
+  Button,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@material-tailwind/react";
+ 
+export const Model1 = ({children,button,id}) => {
 
-const Transition = forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-  });
 
-export const Model1 = ({children,button}) => {
   const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const deleteDonation = async ({id}) => {
+    try {
+      const response = await fetch(`/api/auth/deletedonation/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok){
+        alert("successfully deleted");
+      }
+  
+      if (!response.ok) {
+        throw new Error('Failed to delete donation');
+      }
+  
+      console.log('Donation deleted successfully');
+    } catch (error) {
+      console.error('Error deleting donation:', error.message);
+    }
   };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
+  deleteDonation()
+ 
+  const handleOpen = () => setOpen(!open);
+ 
   return (
-    <React.Fragment>
-      <Button variant="outlined" onClick={handleClickOpen}>
+    <>
+      <Button onClick={handleOpen}  className="bg-[#810b0b]">
         {button}
       </Button>
-      <Dialog
-        open={open}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleClose}
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle>{"Use Google's location service?"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            {children}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>close</Button>
-          <Button onClick={handleClose} className="bg-[#a71313a6]">Delete</Button>
-        </DialogActions>
+      <Dialog open={open} handler={handleOpen}>
+        <DialogHeader>Its a simple dialog.</DialogHeader>
+        <DialogBody>
+          {children}
+        </DialogBody>
+        <DialogFooter>
+          <Button
+            variant="text"
+            color="red"
+            onClick={handleOpen}
+            className="mr-1"
+          >
+            <span>Cancel</span>
+          </Button>
+          <Button variant="gradient" color="green" onClick={() => {
+            if(id != ""){
+                deleteDonation()
+            }
+            // handleOpen();
+            
+          }}>
+            <span>Confirm</span>
+          </Button>
+        </DialogFooter>
       </Dialog>
-    </React.Fragment>
+    </>
   );
 }
-export default Model1

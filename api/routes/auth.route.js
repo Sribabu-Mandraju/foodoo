@@ -13,7 +13,7 @@ router.post("/signin", signin);
 //food routes
 router.post("/donatefood",verifyToken,DonateFood)
 router.get("/getdonations",verifyToken,GetALlDonations)
-router.patch("/updatedonation/:id",verifyToken,UpdateDonationByID)
+router.put("/updatedonation/:id",verifyToken,UpdateDonationByID)
 router.delete("/deletedonation/:id",verifyToken,DeleteDonation)
 
 
