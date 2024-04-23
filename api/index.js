@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import cors from 'cors'
 dotenv.config();
 
 import authRouter from "./routes/auth.route.js";
@@ -18,8 +19,19 @@ mongoose
   });
 
 const app = express();
-
+// app.use(cors({origin:"http://localhost:5174"}))
 app.use(express.json());
+const allowedOrigins = ['http://localhost:5174'];
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+};
+app.use(cors());
 
 app.use(cookieParser());
 

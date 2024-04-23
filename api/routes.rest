@@ -42,13 +42,13 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:3000/api/auth/updatedonation/66275a7d88df54badf5332b1
+PATCH http://localhost:3000/api/auth/updatedonation/66275a7d88df54badf5332b1
 Content-Type: application/json
 
   {
-  "foodname": "Pizza1",
+  "foodname": "updated pizza",
   "email": "examplesdmsdf nmsd1@example.com",
-  "phonenumber": "ss",
+  "phonenumber": "12",
   "quantity": 12,
   "address": "123 Mainsdmndm St.peterberg",
   "mealType": "Smfdmfupper",
@@ -62,4 +62,31 @@ Content-Type: application/json
 
 DELETE http://localhost:3000/api/auth/deletedonation/662697e54e25c32d98f226f0
 Content-Type: application/json
+
+
+###
+POST http://localhost:3000/api/auth/contact
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "johndoe@example.com",
+  "phone": "1234567890",
+  "subject": "Inquiry about your services",
+  "message": "Hello, I'm interested in learning more about the services your company provides. Could you please provide me with more information?"
+}
+
+
+###
+
+GET http://localhost:3000/api/auth/allContacts
+Content-Type: application/json
+
+
+###
+
+DELETE http://localhost:3000/api/auth/deleteContact/6627954074104fc5f83382d9
+Content-Type: application/json
+
+
 

@@ -11,11 +11,11 @@ const foodSchema = new Schema(
       required: true,
     },
     phonenumber: {
-      type: Number,
+      type: String,
       required: true,
     },
     quantity: {
-      type: Number,
+      type: String,
       required: true,
     },
     address: {

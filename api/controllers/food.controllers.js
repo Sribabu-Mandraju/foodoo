@@ -23,6 +23,7 @@ export const DonateFood = async (req, res) => {
         categoryType,
         district,
       });
+
   
       return res.status(200).json({
         success: true,
@@ -63,6 +64,7 @@ export const DonateFood = async (req, res) => {
           success: false,
           message: "No fields provided for update",
         });
+
       }
   
       const updatedFood = await Food.findByIdAndUpdate(id, updateFields, {
@@ -75,6 +77,7 @@ export const DonateFood = async (req, res) => {
           message: "Food donation not found",
         });
       }
+
   
       return res.status(200).json({
         success: true,
@@ -85,7 +88,7 @@ export const DonateFood = async (req, res) => {
       console.error(error);
       return res.status(500).json({
         success: false,
-        message: "Internal server error",
+        message:error.message,
       });
     }
   }

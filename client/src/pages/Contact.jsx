@@ -1,9 +1,10 @@
 import React from 'react'
+import { ContactTable } from '../components/Table/ContactTable'
 
 const Contact = () => {
   return (
     <>
-      <div className="w-full text-center">Hello</div>
+      <ContactTable />
     </>
   )
 }
