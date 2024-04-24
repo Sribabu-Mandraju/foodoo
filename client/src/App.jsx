@@ -12,12 +12,12 @@ import ProtectedRoutes from "./ProtectedRoutes";
 import Contact from "./pages/Contact";
 
 function App() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const { donations, loading, error } = useSelector((state) => state.donations);
-  useEffect(() => {
-    dispatch(fetchDonations());
-  }, [dispatch]);
+  // const { donations, loading, error } = useSelector((state) => state.donations);
+  // useEffect(() => {
+  //   dispatch(fetchDonations());
+  // }, [dispatch]);
 
   return (
     <BrowserRouter>
