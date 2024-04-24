@@ -34,8 +34,10 @@ const Dashboard = () => {
 
   const fetchAllDonations = async () => {
     try {
+      console.log("fectfing all donatioons called");
       const response = await fetch("/api/auth/getdonations");
       const data = await response.json();
+      console.log(data, "data");
       if (!data.success) {
         toast.error(data.message);
       }
@@ -49,6 +51,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+    console.log("useEffect called");
     fetchAllDonations();
   }, []);
 
@@ -106,7 +109,7 @@ const Dashboard = () => {
       console.error("Error deleting donation:", error.message);
     }
   };
-  console.log(filteredDonations);
+  // console.log(filteredDonations);
   return (
     <section>
       <Header />
@@ -188,7 +191,7 @@ const Dashboard = () => {
           </thead>
 
           <tbody>
-            {fliteredData.length > 0 &&
+            {filteredData.length > 0 &&
               filteredData.map((item, index) => {
                 const isLast = index === filteredDonations.length - 1;
                 const classes = isLast
