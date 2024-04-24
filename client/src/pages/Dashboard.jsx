@@ -29,8 +29,8 @@ const Dashboard = () => {
   const [allDonations, setAllDonations] = useState([]);
   const [filteredDonations, setFilteredDonations] = useState([]); // State to store filtered donations
   const [searchTerm, setSearchTerm] = useState(""); // State to store search term
-  const [fromDate, setFromDate] = useState(null);
-  const [toDate, setToDate] = useState(null);
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
 
   const fetchAllDonations = async () => {
     try {

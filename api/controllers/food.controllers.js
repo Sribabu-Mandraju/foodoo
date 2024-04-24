@@ -40,10 +40,10 @@ export const DonateFood = async (req, res) => {
 };
 
 export const GetALlDonations = async (req, res) => {
-  console.log("get all donations called");
+  // console.log("get all donations called");
   try {
     const food = await Food.find();
-    console.log("food", food);
+    // console.log("food", food);
     res.status(200).json({
       success: true,
       data: food,
