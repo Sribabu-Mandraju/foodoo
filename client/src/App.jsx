@@ -1,5 +1,5 @@
-import { useState,useEffect } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchDonations } from "./redux/donation/Donation";
 
 import "./App.css";
@@ -14,7 +14,7 @@ import Contact from "./pages/Contact";
 function App() {
   const dispatch = useDispatch();
 
-  const { donations, loading, error } = useSelector(state => state.donations);
+  const { donations, loading, error } = useSelector((state) => state.donations);
   useEffect(() => {
     dispatch(fetchDonations());
   }, [dispatch]);
@@ -25,6 +25,7 @@ function App() {
         <Route path="/" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
         <Route element={<ProtectedRoutes />}>
+          <Route path="/home" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/contact" element={<Contact />} />
         </Route>
