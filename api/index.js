@@ -3,12 +3,12 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-dotenv.config();
+import authRouter from "./routes/auth.route.js";
 import path from "path";
 
-import authRouter from "./routes/auth.route.js";
+dotenv.config();
 
-const dbName = "FOOD_DONATION";
+// const dbName = "FOOD_DONATION";
 
 mongoose
   .connect(process.env.MONGO_URL)
@@ -46,8 +46,8 @@ app.listen(3000, () => {
 
 app.use("/api/auth", authRouter);
 
-app.use("*", (req, res) => {
+app.use(express.static(path.join(_dirname, "/client/dist")));
+
+app.get("*", (req, res) => {
   res.sendFile(path.join(_dirname, "client", "dist", "index.html"));
 });
-
-app.use(express.static(path.join(_dirname, "/client/dist")));
